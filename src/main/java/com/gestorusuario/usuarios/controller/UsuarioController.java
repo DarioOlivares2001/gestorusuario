@@ -2,7 +2,9 @@ package com.gestorusuario.usuarios.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gestorusuario.usuarios.model.Perfil;
 import com.gestorusuario.usuarios.model.Usuario;
+import com.gestorusuario.usuarios.service.PerfilService;
 import com.gestorusuario.usuarios.service.UsuarioService;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -28,6 +32,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private PerfilService perfilService;
+
     @GetMapping
     public List<Usuario> getAllUsuarios() {
         return usuarioService.getAllUsuarios();
@@ -37,6 +44,12 @@ public class UsuarioController {
     public Optional<Usuario> getUsuarioById(@PathVariable Long id) {
         return usuarioService.getUsuarioById(id);
     }
+
+    @GetMapping("/perfiles")
+    public List<Perfil> getAllPerfiles() {
+        return perfilService.getAllPerfiles();
+    }
+    
     
     @PostMapping
     public Usuario createUsuario(@RequestBody Usuario usuario) {
@@ -56,5 +69,7 @@ public class UsuarioController {
         usuarioService.deleteUsuario(id);
 
     }
+
+
 
 }

@@ -58,6 +58,31 @@ public class UsuarioController {
         
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<Object> getLogin(@PathVariable Long id, @RequestBody Usuario usuario)  {
+        Optional<Usuario> user = usuarioService.getUsuarioByNombre(usuario.getNombre());
+        if(!user.isPresent())
+        {
+            Usuario u = user.get();
+          
+            log.error("ERRRO INICIO SESSION!!!");
+            log.error("No se encontró el usuario nombre {}", u.getNombre());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No existe el usuario con nombre " + u.getNombre()));
+        }
+
+        if(!user.get().getPassword().equals(usuario.getPassword()))
+        {
+            log.error("ERRRO INICIO SESSION!!!");
+            log.error("La password no ingresada no coincide para el usuario {}", user.get().getNombre());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("La password no coincide para el usuario " + user.get().getNombre()));
+        }
+
+        log.error("USUARIO LOGUEADO");
+        return ResponseEntity.ok(user);
+        
+    }
+
+
     @GetMapping("/perfiles")
     public List<Perfil> getAllPerfiles() {
         log.info("GET / Perfiles");
@@ -126,12 +151,20 @@ public class UsuarioController {
         {
             log.error("El nombre de usuario no puede ser vacio {}", usuario);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("El nombre no puede ser vacio " + usuario));
-
         }
+
+        if(usuario.getPassword().equals(""))
+        {
+            log.error("La password de usuario no puede ser vacia {}", usuario);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("La password no puede ser vacio " + usuario));
+        }
+
         Usuario upduser = usuarioService.updateUsuario(id, usuario);
         log.info("Usuario Actualizado");
         return ResponseEntity.ok(upduser);
     }
+
+
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUsuario(@PathVariable Long id)

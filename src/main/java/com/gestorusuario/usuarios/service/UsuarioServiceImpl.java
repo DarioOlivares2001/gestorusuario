@@ -52,7 +52,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-
+    @Override 
+    public Usuario getUsuarioByNombre(String nombre){
+        return usuarioRepository.findByNombreUsuario(nombre);
+    }
 
     
 }

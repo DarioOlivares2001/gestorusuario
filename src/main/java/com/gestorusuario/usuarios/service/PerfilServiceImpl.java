@@ -29,4 +29,14 @@ public class PerfilServiceImpl implements PerfilService {
 
     }
     
+    public Perfil createPerfil(Perfil perfil)
+    {
+        return perfilRepository.save(perfil);
+
+    }
+
+    public void deletePerfil(Long id)
+    {
+        perfilRepository.deleteById(id);
+    }
 }

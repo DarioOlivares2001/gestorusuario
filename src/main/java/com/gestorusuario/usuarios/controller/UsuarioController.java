@@ -58,27 +58,37 @@ public class UsuarioController {
         
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Object> getLogin(@PathVariable Long id, @RequestBody Usuario usuario)  {
-        Optional<Usuario> user = usuarioService.getUsuarioByNombre(usuario.getNombre());
-        if(!user.isPresent())
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody Usuario usuario)  {
+        List<Usuario> listauser = usuarioService.getAllUsuarios();
+        String user = "";
+        String password = "";
+
+        for(Usuario u : listauser)
         {
-            Usuario u = user.get();
-          
-            log.error("ERRRO INICIO SESSION!!!");
-            log.error("No se encontró el usuario nombre {}", u.getNombre());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No existe el usuario con nombre " + u.getNombre()));
+            if(u.getNombre().equals(usuario.getNombre())){
+                user = u.getNombre();
+                password = u.getPassword();
+            }
         }
 
-        if(!user.get().getPassword().equals(usuario.getPassword()))
+        
+        if(user == "")
         {
             log.error("ERRRO INICIO SESSION!!!");
-            log.error("La password no ingresada no coincide para el usuario {}", user.get().getNombre());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("La password no coincide para el usuario " + user.get().getNombre()));
+            log.error("No se encontró el usuario nombre {}", usuario.getNombre());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No existe el usuario con nombre " + usuario.getNombre()));
+        }
+
+        if(!password.equals(usuario.getPassword()))
+        {
+            log.error("ERRRO INICIO SESSION!!!");
+            log.error("La password ingresada no coincide para el usuario {}", usuario.getNombre());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("La password no coincide para el usuario " + usuario.getNombre()));
         }
 
         log.error("USUARIO LOGUEADO");
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(usuario);
         
     }
 

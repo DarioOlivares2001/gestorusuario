@@ -1,0 +1,12 @@
+version: '1'
+services:
+  microservicio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - spring.datasource.url=jdbc:oracle:thin:@zabe0uhpc4dpxonm_tp?TNS_ADMIN=/app/oracle_wallet/
+      - SPRING_DATASOURCE_USERNAME=ADMIN
+      - SPRING_DATASOURCE_PASSWORD=GryffoOlivares_2001

@@ -3,7 +3,6 @@ package com.gestorusuario.usuarios.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +37,17 @@ public class PerfilServiceImpl implements PerfilService {
     public void deletePerfil(Long id)
     {
         perfilRepository.deleteById(id);
+    }
+
+    public Perfil updatePerfil(Long id, Perfil perfil) {
+        Optional<Perfil> optionalPerfil = perfilRepository.findById(id);
+        if (optionalPerfil.isPresent()) {
+            Perfil existingPerfil = optionalPerfil.get();
+            existingPerfil.setNombreperfil(perfil.getNombreperfil());
+            // Actualiza otros campos si es necesario
+            return perfilRepository.save(existingPerfil);
+        } else {
+            throw new RuntimeException("No se encontró el perfil con el ID: " + id);
+        }
     }
 }

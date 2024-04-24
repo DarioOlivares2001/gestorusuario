@@ -1,0 +1,4 @@
+com\gestorusuario\usuarios\controller\PerfilControllerTest.class
+com\gestorusuario\usuarios\repository\PerfilRepositoryTest.class
+com\gestorusuario\usuarios\service\PerfilServiceTest.class
+com\gestorusuario\usuarios\UsuariosApplicationTests.class

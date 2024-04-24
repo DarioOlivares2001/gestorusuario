@@ -1,0 +1,13 @@
+com\gestorusuario\usuarios\repository\PerfilRepository.class
+com\gestorusuario\usuarios\service\UsuarioService.class
+com\gestorusuario\usuarios\controller\PerfilNotFoundException.class
+com\gestorusuario\usuarios\model\Perfil.class
+com\gestorusuario\usuarios\repository\UsuarioRepository.class
+com\gestorusuario\usuarios\service\UsuarioServiceImpl.class
+com\gestorusuario\usuarios\controller\UsuarioController.class
+com\gestorusuario\usuarios\UsuariosApplication.class
+com\gestorusuario\usuarios\controller\UsuarioNotFoundException.class
+com\gestorusuario\usuarios\model\Usuario.class
+com\gestorusuario\usuarios\service\PerfilService.class
+com\gestorusuario\usuarios\controller\UsuarioController$ErrorResponse.class
+com\gestorusuario\usuarios\service\PerfilServiceImpl.class

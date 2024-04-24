@@ -103,7 +103,7 @@ public class UsuarioController {
     }*/
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody Usuario usuario)  {
+    public ResponseEntity<Object> login(@RequestBody Usuario usuario) {
         List<Usuario> listauser = usuarioService.getAllUsuarios();
         String user = "";
         String password = "";
@@ -116,24 +116,26 @@ public class UsuarioController {
             }
         }
 
-        
-        if(user == "")
+        if(user.equals(""))
         {
-            log.error("ERRRO INICIO SESSION!!!");
-            log.error("No se encontró el usuario nombre {}", usuario.getNombre());
+            log.error("ERROR INICIO SESIÓN!!!");
+            log.error("No se encontró el usuario con nombre {}", usuario.getNombre());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No existe el usuario con nombre " + usuario.getNombre()));
         }
 
         if(!password.equals(usuario.getPassword()))
         {
-            log.error("ERRRO INICIO SESSION!!!");
-            log.error("La password ingresada no coincide para el usuario {}", usuario.getNombre());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("La password no coincide para el usuario " + usuario.getNombre()));
+            log.error("ERROR INICIO SESIÓN!!!");
+            log.error("La contraseña ingresada no coincide para el usuario {}", usuario.getNombre());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("La contraseña no coincide para el usuario " + usuario.getNombre()));
         }
 
-        log.error("USUARIO LOGUEADO");
-        return ResponseEntity.ok(usuario);
+        // Crear enlace HATEOAS
+        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).login(usuario)).withSelfRel();
         
+        // Devolver el usuario como EntityModel con enlace HATEOAS
+        EntityModel<Usuario> resource = EntityModel.of(usuario, selfLink);
+        return ResponseEntity.ok(resource);
     }
 
     @GetMapping("/perfiles")
@@ -221,7 +223,7 @@ public class UsuarioController {
     }
     
 
-    @PostMapping("/usuarios")
+    @PostMapping
     public ResponseEntity<EntityModel<Usuario>> createUsuario(@RequestBody Usuario usuario) {
         List<Usuario> listaUsuarios = usuarioService.getAllUsuarios();
         for (Usuario u : listaUsuarios) {

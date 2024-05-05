@@ -1,6 +1,8 @@
 package com.gestorusuario.usuarios.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
@@ -51,6 +53,28 @@ public class PerfilServiceTest {
         perfilService.deletePerfil(perfilAEliminar.getIdperfil());
 
         verify(perfilrepositorymock, times(1)).deleteById(perfilAEliminar.getIdperfil());
+    }
+
+
+    @Test
+    public void buscarPerfilPorIdExistenteTest(){
+        Perfil perfil = new Perfil();
+        perfil.setIdperfil(1L);
+        perfil.setNombreperfil("Administrador");
+
+        when(perfilrepositorymock.findById(1L)).thenReturn(Optional.of(perfil));
+
+        Optional<Perfil> perfilOptional = perfilService.getPerfilById(1L);
+        assertTrue(perfilOptional.isPresent());
+        assertEquals("Administrador", perfilOptional.get().getNombreperfil());
+    }
+
+    @Test
+    public void buscarPerfilPorIdInexistenteTest(){
+        when(perfilrepositorymock.findById(2L)).thenReturn(Optional.empty());
+
+        Optional<Perfil> perfilOptional = perfilService.getPerfilById(2L);
+        assertFalse(perfilOptional.isPresent());
     }
 
 }
